@@ -1,0 +1,17 @@
+name: Build for production and deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: node
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run ng -- deploy --repo=https://github.com/${{ github.repository }}.git --name="GitHub Actions" --email="actions@github.com" --no-silent
